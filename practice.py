@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import urllib, sqlite3, subprocess, re, os, time, sys
 from pyvirtualdisplay import Display
 import configparser
@@ -8,10 +9,9 @@ import logging
 config = configparser.ConfigParser()
 config.read('config.ini')
 apk_directory = config.get('Setting', 'APK_DIRECTORY')
-display = Display(visible = 0, size = (800, 600))
-display.start()
-
-chrome = webdriver.Chrome(config.get('Setting', 'CHROME_DRIVER_DIRECTORY'))
+# display = Display(visible = 0, size = (800, 600))
+# display.start()
+chrome = webdriver.Chrome(executable_path = 'C:\chromedriver.exe' , chrome_options = Options().add_argument("--headless"))
 category_list = config.items('PlayStoreURL')
 
 def get_new_applist(popurl):
@@ -56,6 +56,7 @@ def get_app_detail(package_list):
 
 
 for category in category_list:
+    print("asdfadsf")
     category_name = category[0]
     url = category[1]
     new_package_list = get_new_applist(url)
