@@ -4,4 +4,8 @@
 
 ## Installation
 
-## Information
+## Requirements
+* urllib
+* sqlite3
+* requests
+* selenium
