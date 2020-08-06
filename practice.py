@@ -1,10 +1,9 @@
 from selenium import webdriver
 import urllib, sqlite3, subprocess, re, os, time, sys
-from pyvirtualdisplay from Display
+from pyvirtualdisplay import Display
 import configparser
 import requests
 import logging
-from DBController import DBController
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -60,5 +59,5 @@ for category in category_list:
     category_name = category[0]
     url = category[1]
     new_package_list = get_new_applist(url)
-    updated_app_list = get_app_detail(package_list)
+    updated_app_list = get_app_detail(new_package_list)
     print(updated_app_list)
