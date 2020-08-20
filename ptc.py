@@ -77,3 +77,4 @@ for category in category_list:
     go_to_database(updated_app_list)
     
 conn.close()
+chrome.close()
