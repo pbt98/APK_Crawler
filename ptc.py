@@ -55,17 +55,13 @@ def get_app_detail(package_list):
 
     return detail_list
 
-def go_to_database(detail_list):
+def go_to_database(detail_list, category_name):
     # https://docs.python.org/3/library/sqlite3.html --> Last week, You can fill the code with the material I gave last week. gogogo!
-    
-    for i in range(1,46):
-        conn=sqlite3.connect(str(i)+'test.db')
-        c=conn.cursor()
-        c.execute('''CREATE TABLE App
-                     (name text, package text, img_src text, updated_date text)''')
-        c.executemany("insert into App(name, package, img_src, updated_date) values (?,?,?,?)", detail_list)
-   
-        
+    conn=sqlite3.connect('test.db')
+    c=conn.cursor()
+    c.execute('''CREATE TABLE App
+                    (category text, name text, package text, img_src text, updated_date text)''')
+    c.executemany("insert into App(category, name, package, img_src, updated_date) values (?,?,?,?,?)", category_name, detail_list)
     conn.commit()
     conn.close()
     return True
@@ -77,7 +73,5 @@ for category in category_list:
     print(new_package_list)
     updated_app_list = get_app_detail(new_package_list)
     print(updated_app_list)
-    if not go_to_database(updated_app_list):
-        print("FATAL ERROR")
-        exit(1) 
+    go_to_database(updated_app_list, category_name)
     
