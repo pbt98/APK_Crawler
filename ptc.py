@@ -34,7 +34,7 @@ def get_new_applist(popurl):
         package_list.append(package_name)
     return package_list
     
-def get_app_detail(package_list):
+def get_app_detail(category_name, package_list):
     base_url = "https://play.google.com/store/apps/details?id="
     detail_list = []
 
@@ -51,17 +51,17 @@ def get_app_detail(package_list):
             print("FATAL ERROR", package)
             continue
 
-        detail_list.append([name, package, img_src, updated_date]) #이게 각 패키지별 이름
+        detail_list.append([category_name, name, package, img_src, updated_date]) #이게 각 패키지별 이름
 
     return detail_list
 
-def go_to_database(detail_list, category_name):
+def go_to_database(detail_list):
     # https://docs.python.org/3/library/sqlite3.html --> Last week, You can fill the code with the material I gave last week. gogogo!
     conn=sqlite3.connect('test.db')
     c=conn.cursor()
     c.execute('''CREATE TABLE App
                     (category text, name text, package text, img_src text, updated_date text)''')
-    c.executemany("insert into App(category, name, package, img_src, updated_date) values (?,?,?,?,?)", category_name, detail_list)
+    c.executemany("insert into App(category, name, package, img_src, updated_date) values (?,?,?,?,?)", detail_list)
     conn.commit()
     conn.close()
     return True
@@ -71,7 +71,7 @@ for category in category_list:
     url = category[1]
     new_package_list = get_new_applist(url)
     print(new_package_list)
-    updated_app_list = get_app_detail(new_package_list)
+    updated_app_list = get_app_detail(category_name, new_package_list)
     print(updated_app_list)
-    go_to_database(updated_app_list, category_name)
+    go_to_database(updated_app_list)
     
