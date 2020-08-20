@@ -14,6 +14,10 @@ config.read(r'config.ini')
 chrome = webdriver.Chrome(executable_path = 'C:\chromedriver.exe' , chrome_options = Options().add_argument("--headless"))
 category_list = config.items('PlayStoreURL')
 db_directory = config.get('Setting', 'DB_DIRECTORY') # Recommend fill with your DB file's directory
+conn=sqlite3.connect('test.db')
+c=conn.cursor()
+c.execute('''CREATE TABLE App
+            (category text, name text, package text, img_src text, updated_date text)''')
 
 def get_new_applist(popurl):
     chrome.get(popurl)
@@ -57,13 +61,10 @@ def get_app_detail(category_name, package_list):
 
 def go_to_database(detail_list):
     # https://docs.python.org/3/library/sqlite3.html --> Last week, You can fill the code with the material I gave last week. gogogo!
-    conn=sqlite3.connect('test.db')
-    c=conn.cursor()
-    c.execute('''CREATE TABLE App
-                    (category text, name text, package text, img_src text, updated_date text)''')
+    
+    
     c.executemany("insert into App(category, name, package, img_src, updated_date) values (?,?,?,?,?)", detail_list)
     conn.commit()
-    conn.close()
     return True
 
 for category in category_list:
@@ -75,3 +76,4 @@ for category in category_list:
     print(updated_app_list)
     go_to_database(updated_app_list)
     
+conn.close()
