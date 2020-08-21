@@ -1,16 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import urllib, sqlite3, subprocess, re, os, time, sys
-from pyvirtualdisplay import Display
+import sqlite3
 import configparser
-import requests
-#import logging
 
 config = configparser.ConfigParser()
 config.read(r'config.ini')
-#apk_directory = config.get('Setting', 'APK_DIRECTORY')
-# display = Display(visible = 0, size = (800, 600))
-# display.start()
 chrome = webdriver.Chrome(executable_path = 'C:\chromedriver.exe' , chrome_options = Options().add_argument("--headless"))
 category_list = config.items('PlayStoreURL')
 db_directory = config.get('Setting', 'DB_DIRECTORY') # Recommend fill with your DB file's directory
@@ -60,9 +54,6 @@ def get_app_detail(category_name, package_list):
     return detail_list
 
 def go_to_database(detail_list):
-    # https://docs.python.org/3/library/sqlite3.html --> Last week, You can fill the code with the material I gave last week. gogogo!
-    
-    
     c.executemany("insert into App(category, name, package, img_src, updated_date) values (?,?,?,?,?)", detail_list)
     conn.commit()
     return True
