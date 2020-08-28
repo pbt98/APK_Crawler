@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import sqlite3
 import configparser
+import os
 
 config = configparser.ConfigParser()
 config.read(r'config.ini')
@@ -63,6 +64,8 @@ for category in category_list:
     url = category[1]
     new_package_list = get_new_applist(url)
     print(new_package_list)
+    for package in new_package_list:
+        os.system("gplaydl download --packageId " + package)
     updated_app_list = get_app_detail(category_name, new_package_list)
     print(updated_app_list)
     go_to_database(updated_app_list)
