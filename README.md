@@ -1,6 +1,12 @@
 # APK_Crawler
 - APK Crawler for Android research
-- Author: Sungbin Park, Yujin Jung
+
+## Author
+
+|Grade|Name|
+|---|---------------|
+|3rd|Sungbin Park|
+|1st|Yujin Jung|
 
 ## Installation
 
