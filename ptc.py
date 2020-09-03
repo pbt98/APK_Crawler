@@ -4,6 +4,7 @@ import sqlite3
 import configparser
 import os
 import requests
+import time
 
 config = configparser.ConfigParser()
 config.read(r'config.ini')
@@ -87,7 +88,8 @@ for category in category_list:
         package = parameter[2]
         name = parameter[1]
         try:
-            download_apk(package_name, name)
+            download_apk(package, name)
+            print(package + "done")
         except Exception as e:
             print(e)
             continue
