@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 import sqlite3
 import configparser
 import os
+import requests
 
 config = configparser.ConfigParser()
 config.read(r'config.ini')
@@ -59,14 +60,37 @@ def go_to_database(detail_list):
     conn.commit()
     return True
 
+def download_apk(package_name, name):
+    download_url = "https://apkpure.com/kr/" + name + "/" + package_name +  "/download?from=details"
+    file_name = str(package_name) + '.apk'
+    # timout 1분으로 설정하여 반응이 없는 것들은 예외처리
+    try:
+        r = requests.get(download_url, timeout=60)
+        # apk directory에 패키지이름.apk 형태로 저장
+        with open(file_name,'wb') as apk:
+            apk.write(r.content)
+    except requests.exceptions.Timeout as e:
+        print('time out')
+        return False
+    except Exception as e:
+        print(e)
+        return False
+    return True
+
 for category in category_list:
     category_name = category[0]
     url = category[1]
     new_package_list = get_new_applist(url)
     print(new_package_list)
-    for package in new_package_list:
-        os.system("gplaydl download --packageId " + package)
     updated_app_list = get_app_detail(category_name, new_package_list)
+    for parameter in updated_app_list:
+        package = parameter[2]
+        name = parameter[1]
+        try:
+            download_apk(package_name, name)
+        except Exception as e:
+            print(e)
+            continue
     print(updated_app_list)
     go_to_database(updated_app_list)
     
