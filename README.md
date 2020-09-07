@@ -15,3 +15,7 @@
 * sqlite3
 * requests
 * selenium
+* os
+* time
+* configparser
+
